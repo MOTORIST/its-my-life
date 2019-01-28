@@ -1,8 +1,8 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import SignInForm from '../../components/sign-in-form';
+import ForgotPasswordForm from '../../components/forgot-password-form';
 
-const  styles = () => ({
+const styles = () => ({
   root: {
     width: '100%',
     height: '100%',
@@ -12,12 +12,12 @@ const  styles = () => ({
   },
 });
 
-function SignIn({classes}) {
+function ForgotPassword({classes}) {
   return (
     <div className={classes.root}>
-      <SignInForm/>
+      <ForgotPasswordForm/>
     </div>
   );
 }
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(ForgotPassword);

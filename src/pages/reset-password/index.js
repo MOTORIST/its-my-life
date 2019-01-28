@@ -1,6 +1,6 @@
 import React from 'react';
+import ResetPasswordForm from '../../components/reset-password-form';
 import {withStyles} from '@material-ui/core/styles';
-import SignInForm from '../../components/sign-in-form';
 
 const  styles = () => ({
   root: {
@@ -12,12 +12,12 @@ const  styles = () => ({
   },
 });
 
-function SignIn({classes}) {
+function ResetPassword({classes}) {
   return (
     <div className={classes.root}>
-      <SignInForm/>
+      <ResetPasswordForm />
     </div>
   );
 }
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(ResetPassword);

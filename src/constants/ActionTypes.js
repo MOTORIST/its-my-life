@@ -28,6 +28,7 @@ export const LOAD_PHOTO_SET_STATUS = 'LOAD_PHOTO_SET_STATUS';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
+export const RESET_PASSWORD = 'RESET_PASSWORD';
 
 export const FETCH_USER = 'FETCH_USER';
 export const EDIT_USER = 'EDIT_USER';

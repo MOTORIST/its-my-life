@@ -1,4 +1,4 @@
-import {EDIT_USER, FETCH_USER, FORGOT_PASSWORD, LOGIN, LOGOUT, SUCCESS} from '../constants/ActionTypes';
+import {EDIT_USER, FETCH_USER, FORGOT_PASSWORD, LOGIN, LOGOUT, RESET_PASSWORD, SUCCESS} from '../constants/ActionTypes';
 
 export function login(email, password, rememberMe = false, goBack = null) {
   return {
@@ -65,5 +65,14 @@ export function forgotPassword(email) {
   return {
     type: FORGOT_PASSWORD,
     email: email,
+  }
+}
+
+export function resetPassword(token, password, password_confirmation) {
+  return {
+    type: RESET_PASSWORD,
+    token,
+    password,
+    password_confirmation,
   }
 }

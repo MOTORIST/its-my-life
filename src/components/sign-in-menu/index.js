@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import history from '../../history';
+import {withRouter} from 'react-router-dom';
+import {compose} from 'recompose';
 import {logout} from '../../actions/user';
 import Button from '@material-ui/core/Button/Button';
 import {Link} from 'react-router-dom';
@@ -15,6 +17,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 class SignInMenu extends Component {
   state = {
     anchorEl: null,
+    path: history.location.pathname,
   };
 
   handleMenu = event => {
@@ -40,12 +43,15 @@ class SignInMenu extends Component {
     const {user: {name, isAuth}} = this.props;
     const {anchorEl} = this.state;
     const open = Boolean(anchorEl);
-    const path = history.location.pathname;
+
+    history.listen(location => {
+      this.setState({path: location.pathname})
+    });
 
     const signIn = (
       <Button
-        //disabled={path === '/signin'}
-        component={({...props}) => <Link to='/signin' {...props} />}
+        disabled={this.state.path === '/sign-in'}
+        component={({...props}) => <Link to='/sign-in' {...props} />}
         color="inherit">Sign in</Button>
     );
 
@@ -110,4 +116,7 @@ SignInMenu.propTypes = {
   }).isRequired,
 };
 
-export default connect(mapStateToProps)(SignInMenu);
+export default compose(
+  withRouter,
+  connect(mapStateToProps),
+)(SignInMenu);
