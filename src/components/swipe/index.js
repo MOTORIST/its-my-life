@@ -74,11 +74,14 @@ class Swipe extends Component{
   }
 
   render() {
+    const {onLeft, onRight, onUp, onDown, ...otherProps} = this.props;
+
     return (
       <div
         onTouchStart={this.handleSwipeStart}
         onTouchMove={this.handleSwipeMove}
         onTouchEnd={this.handleSwipeEnd}
+        {...otherProps}
       >
         {this.props.children}
       </div>
