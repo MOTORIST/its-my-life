@@ -117,7 +117,6 @@ class AlbumListItem extends Component {
         </CardActionsTop>
 
         <DialogConfirmation
-          onClick={(e) => e.stopPropagation()}
           open={this.state.openDialogConfirm}
           onClose={this.handleCloseConfirm}
           title="Are you sure?"

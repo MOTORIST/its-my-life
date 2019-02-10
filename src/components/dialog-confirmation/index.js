@@ -14,20 +14,27 @@ DialogConfirmation.propTypes = {
 };
 
 function DialogConfirmation({open, value, onClose, title, text, ...other}) {
-  const handleCancel = (e) => {
-    e.stopPropagation();
-    onClose(e, false);
+  const handleCancel = () => {
+    onClose(false);
   };
 
-  const handleOk = (e) => {
+  const handleOk = () => {
+    onClose(true);
+  };
+
+  const handleOnClose = () => {
+    onClose(false);
+  };
+
+  const handleOnClickDialog = (e) => {
     e.stopPropagation();
-    onClose(e, true);
   };
 
   return (
     <Dialog
+      onClick={handleOnClickDialog}
       open={open}
-      onClose={(e) => onClose(e, false)}
+      onClose={handleOnClose}
       maxWidth="xs"
       aria-labelledby="confirmation-dialog-title"
       {...other}
