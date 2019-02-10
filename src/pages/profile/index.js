@@ -9,63 +9,55 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import UserIcon from '@material-ui/icons/Face';
 import EditIcon from '@material-ui/icons/Edit';
-import Divider from '@material-ui/core/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
 import history from '../../history';
+import styles from './styles';
+import {withStyles} from '@material-ui/core/styles';
+import {compose} from 'recompose';
 
 Profile.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     isAuth: PropTypes.bool.isRequired,
   }).isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 function handleToProfileEditPage() {
   history.push('/profile-edit');
 }
 
-function Profile({user}) {
-  if(!user.isAuth) {
+function Profile({user, classes}) {
+  if (!user.isAuth) {
     history.push('/sign-in');
   }
 
   return (
     <div>
-      <Typography variant="h4" gutterBottom>Profile</Typography>
+      <Typography variant="h4" gutterBottom>
+        Profile
+      </Typography>
 
       <Grid container spacing={24}>
         <Grid item xs={12} sm={3} md={3}>
-          <Card style={{position: 'relative'}}>
+          <Card classes={{root: classes.card}}>
             <CardActionsTop show>
               <Tooltip title="Edit profile">
                 <IconButton
                   color="primary"
                   onClick={handleToProfileEditPage}
                 >
-                  <EditIcon />
+                  <EditIcon/>
                 </IconButton>
               </Tooltip>
             </CardActionsTop>
 
-            <CardContent style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'rgba(0, 184, 212)',
-              color: 'white',
+            <CardContent classes={{
+              root: classes.cardContent,
             }}>
-              <UserIcon style={{fontSize: '150px'}}/>
-              <Typography variant="h5" gutterBottom style={{color: 'white'}}>
+              <UserIcon className={classes.userIcon}/>
+              <Typography className={classes.textUserName} variant="h5" gutterBottom>
                 {user.name}
-              </Typography>
-            </CardContent>
-
-            <Divider />
-
-            <CardContent>
-              <Typography variant="body1">
-                Description
               </Typography>
             </CardContent>
           </Card>
@@ -76,7 +68,10 @@ function Profile({user}) {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user.toJS(),
+  user: state.user,
 });
 
-export default connect(mapStateToProps)(Profile);
+export default compose(
+  connect(mapStateToProps),
+  withStyles(styles),
+)(Profile);
