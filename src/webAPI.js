@@ -8,7 +8,6 @@ export const GET = 'GET';
 export const POST = 'POST';
 export const PATCH = 'PATCH';
 export const DELETE = 'DELETE';
-const host = 'http://localhost:8080/api';
 
 const initAxios = () => {
   const instance = axios.create({
@@ -43,12 +42,12 @@ const handleErrors = (e) => {
 };
 
 function* webAPI (url, method, data, config = {}) {
-  url = host + url;
-
   try{
     yield put(loaderStart());
 
     switch (method) {
+      case GET:
+        return yield initAxios().get(url, config).catch(handleErrors);
       case POST:
         return yield initAxios().post(url, data, config).catch(handleErrors);
       case PATCH:
@@ -66,7 +65,6 @@ function* webAPI (url, method, data, config = {}) {
 }
 
 export function loadFile (url, data, config = {}) {
-  url = host + url;
   return initAxios().post(url, data, config).catch(handleErrors);
 }
 
