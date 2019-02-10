@@ -7,11 +7,13 @@ import ResetPassword from '../pages/reset-password';
 import SignIn from '../pages/sign-in';
 import NotFound from '../pages/not-found';
 import Albums from '../pages/albums';
+import Photos from '../pages/photos';
 
 function Router() {
   return (
     <Switch>
       <Route path='/' component={Albums} exact/>
+      <Route path='/albums/:id' component={Photos} exact/>
       <Route path='/sign-in' component={SignIn} exact/>
       <Route path='/profile' component={Profile} exact/>
       <Route path='/profile-edit' component={ProfileEdit} exact/>
