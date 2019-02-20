@@ -12,7 +12,7 @@ function* loginSaga({email, password}) {
       password: password,
     };
 
-    const {data: {access_token, name}} = yield call(webAPI, '/login', POST,  dataForm);
+    const {data: {data: {access_token, name}}} = yield call(webAPI, '/login', POST,  dataForm);
 
     if(access_token && name) {
       yield put(loginSuccess(access_token, name));
@@ -44,7 +44,7 @@ function* userSaga() {
     const dataUser = yield call(webAPI, '/user');
 
     if(dataUser) {
-      yield put(fetchUserSuccess(dataUser.data));
+      yield put(fetchUserSuccess(dataUser.data.data));
     }
   } catch (e) {
     yield put(snackbarError('Error! Unable to load profile.'));
@@ -56,7 +56,7 @@ function* editUserSaga({values}) {
     const dataUser = yield call(webAPI, '/user', PATCH, values);
 
     if(dataUser) {
-      yield put(editUserSuccess(dataUser.data));
+      yield put(editUserSuccess(dataUser.data.data));
       yield put(snackbarSuccess('Profile changed.'));
       yield call(history.goBack);
     }
