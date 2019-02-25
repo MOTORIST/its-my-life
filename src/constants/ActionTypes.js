@@ -16,6 +16,8 @@ export const IS_FETCH_PHOTOS = 'IS_FETCH_PHOTOS';
 export const FETCH_PHOTOS = 'FETCH_PHOTOS';
 export const DELETE_PHOTO = 'DELETE_PHOTO';
 export const ADD_PHOTO = 'ADD_PHOTO';
+export const FETCH_PHOTO = 'FETCH_PHOTO';
+export const EDIT_PHOTO = 'EDIT_PHOTO';
 
 export const FETCH_ALBUM_WITH_PHOTOS = 'FETCH_ALBUM_WITH_PHOTOS';
 

@@ -12,6 +12,7 @@ import DialogConfirmation from '../dialog-confirmation';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckIcon from '@material-ui/icons/PhotoLibrary';
+import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from '@material-ui/core/Tooltip';
 import {deletePhoto} from '../../actions/photos';
 import {setCover} from '../../actions/albums';
@@ -52,7 +53,7 @@ class PhotoMasonryItem extends Component {
     });
   };
 
-  handleCloseConfirm = (e, value) => {
+  handleCloseConfirm = (value) => {
     if(value) {
       this.deletePhoto();
     }
@@ -65,6 +66,12 @@ class PhotoMasonryItem extends Component {
   deletePhoto = () => {
     const {photo, dispatch} = this.props;
     dispatch(deletePhoto(photo.id));
+  };
+
+  handleEditPhoto = (e) => {
+    e.stopPropagation();
+    const {handleEditPhoto, photo} = this.props;
+    handleEditPhoto(photo.id);
   };
 
   render() {
@@ -93,9 +100,16 @@ class PhotoMasonryItem extends Component {
             <CheckIcon/>
             </IconButton>
           </Tooltip>
+          <Tooltip title="Edit photo">
+            <IconButton
+              color="primary"
+              onClick={this.handleEditPhoto}
+            >
+              <EditIcon/>
+            </IconButton>
+          </Tooltip>
         </CardActionsTop>
         <DialogConfirmation
-          onClick={(e) => e.stopPropagation()}
           open={this.state.openDialogConfirm}
           onClose={this.handleCloseConfirm}
           title="Are you sure?"

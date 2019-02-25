@@ -1,4 +1,11 @@
-import {ADD_PHOTO, DELETE_PHOTO, FETCH_ALBUM_WITH_PHOTOS, FETCH_PHOTOS, SUCCESS,} from '../constants/ActionTypes';
+import {
+  ADD_PHOTO,
+  DELETE_PHOTO,
+  EDIT_PHOTO,
+  FETCH_ALBUM_WITH_PHOTOS, FETCH_PHOTO,
+  FETCH_PHOTOS,
+  SUCCESS,
+} from '../constants/ActionTypes';
 
 export function fetchPhotos(idAlbum, page = null) {
   return {
@@ -43,5 +50,34 @@ export function deletePhotoSuccess(id) {
   return {
     type: DELETE_PHOTO + SUCCESS,
     payload: {id: id}
+  }
+}
+
+export function editPhoto(id, values) {
+  return {
+    type: EDIT_PHOTO,
+    id: id,
+    values: values,
+  }
+}
+
+export function editPhotoSuccess(photo) {
+  return {
+    type: EDIT_PHOTO + SUCCESS,
+    payload: photo,
+  }
+}
+
+export function fetchPhoto(id) {
+  return {
+    type: FETCH_PHOTO,
+    id: id,
+  }
+}
+
+export function fetchPhotoSuccess(photo) {
+  return {
+    type: FETCH_PHOTO + SUCCESS,
+    payload: photo,
   }
 }

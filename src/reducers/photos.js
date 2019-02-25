@@ -1,4 +1,4 @@
-import {ADD_PHOTO, DELETE_PHOTO, FETCH_PHOTOS, SUCCESS} from '../constants/ActionTypes';
+import {ADD_PHOTO, DELETE_PHOTO, EDIT_PHOTO, FETCH_PHOTO, FETCH_PHOTOS, SUCCESS} from '../constants/ActionTypes';
 import {arrToMap} from '../helpers/utils';
 import {OrderedMap, Record} from 'immutable';
 
@@ -6,6 +6,7 @@ export const PhotoRecord = new Record({
   id: null,
   albumId: null,
   title: '',
+  status: 1,
   image: '',
   cover: '',
   thumbnail: '',
@@ -29,6 +30,10 @@ export function photos(state = defaultState, action) {
       return state.deleteIn(['entities', payload.id]);
     case ADD_PHOTO:
       return state.setIn(['entities', payload.id], new PhotoRecord(payload));
+    case EDIT_PHOTO + SUCCESS:
+      return state.mergeIn(['entities', payload.id], payload);
+    case FETCH_PHOTO + SUCCESS:
+      return state.mergeIn(['entities', payload.id], payload);
     default:
       return state;
   }

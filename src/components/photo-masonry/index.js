@@ -6,8 +6,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '@material-ui/core/styles/withTheme';
 import Masonry from 'react-masonry-component';
 import VisibilitySensor from 'react-visibility-sensor';
-import {fetchPhotos} from '../../actions/photos';
+import {fetchPhoto, fetchPhotos} from '../../actions/photos';
 import PhotoMasonryItem from '../photo-masonry-item';
+import DialogEditPhoto from '../dialog-edit-photo';
 
 const style = (theme) => ({
   masonryItem: {
@@ -21,6 +22,9 @@ class PhotoMasonry extends Component {
   state = {
     widthItem: 300,
     defaultWidthItem: 300,
+    isOpenDialogAddAlbum: false,
+    openDialogEditPhoto: false,
+    editPhotoId: null,
   };
 
   componentDidMount() {
@@ -50,6 +54,21 @@ class PhotoMasonry extends Component {
       const page = currentPage + 1;
       dispatch(fetchPhotos(album.id, page));
     }
+  };
+
+  handleEditPhoto = (idPhoto) => {
+    this.props.dispatch(fetchPhoto(idPhoto));
+
+    this.setState({
+      openDialogEditPhoto: true,
+      editPhotoId: idPhoto,
+    });
+  };
+
+  handleCloseDialogEditPhoto = () => {
+    this.setState({
+      openDialogEditPhoto: false,
+    });
   };
 
   calculateWidthItem = () => {
@@ -85,7 +104,11 @@ class PhotoMasonry extends Component {
           }}
           onClick={(e) => handleOpenDialog(e, index)}
         >
-          <PhotoMasonryItem photo={photo} isShowActions={isAuth} />
+          <PhotoMasonryItem
+            photo={photo}
+            handleEditPhoto={this.handleEditPhoto}
+            isShowActions={isAuth}
+          />
         </div>
       );
     });
@@ -95,6 +118,11 @@ class PhotoMasonry extends Component {
           <Masonry options={masonryOptions}>
             {items}
           </Masonry>
+          <DialogEditPhoto
+            isOpen={this.state.openDialogEditPhoto}
+            idPhoto={this.state.editPhotoId}
+            handleClose={this.handleCloseDialogEditPhoto}
+          />
           <VisibilitySensor onChange={this.handleLoadMore}><div>&nbsp;</div></VisibilitySensor>
         </div>
     );
