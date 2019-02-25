@@ -21,7 +21,6 @@ class App extends Component {
         <Loader/>
         <AppBar className={this.classes.appBar}>
           <Toolbar>
-            {/*<PhotoAlbum />*/}
             <Typography className={this.classes.logo} variant="h6" color="inherit">
               It's my life!
             </Typography>
