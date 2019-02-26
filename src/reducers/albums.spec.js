@@ -1,4 +1,4 @@
-import {AlbumMetaRecord, AlbumRecord, albums as albumsReducer, defaultState} from './albums';
+import albums, {AlbumRecord, AlbumMetaRecord, albums as albumsReducer, defaultState} from './albums';
 import {
   ADD_ALBUM,
   DELETE_ALBUM,
@@ -10,14 +10,15 @@ import {
   SET_META_ALBUM,
   SUCCESS
 } from '../constants/ActionTypes';
-import {OrderedMap, Record} from 'immutable';
+import {OrderedMap} from 'immutable';
 
 describe('reducer albums', () => {
+  const ReducerState = albums.__get__('ReducerState');
   const album = {
       id: 1,
       title: "Autem eos iure explicabo...",
-      city: "Волоколамск",
-      country: "Барбадос",
+      city: "Moscow",
+      country: "Russia",
       cover: "http://localhost:8080/storage/photos/1/cover_46tH7HDIBR1t8td7OiejCgZLUxpRa5KVGkDamnb2.jpeg",
       date: "1996-04-10",
       description: "Dolores voluptatem ex incidunt minus ducimus distinctio quis dolorem.",
@@ -38,14 +39,13 @@ describe('reducer albums', () => {
       ],
     };
 
-    const ExpectedStateRecord = Record({
+    const nextState = albumsReducer(defaultState, action);
+    const expected = new ReducerState({
       isFetching: true,
-      entities: (new OrderedMap()).set(1, new AlbumRecord(album)),
+      entities: (new OrderedMap()).set(album.id, new AlbumRecord(album)),
     });
 
-    const expected = (new ExpectedStateRecord());
-
-    expect(albumsReducer(defaultState, action).equals(expected)).toBe(true);
+    expect(nextState).toEqual(expected);
   });
 
   it(FETCH_ALBUM + SUCCESS, () => {
@@ -53,15 +53,13 @@ describe('reducer albums', () => {
       type: FETCH_ALBUM + SUCCESS,
       payload: album,
     };
-
-    const ExpectedStateRecord = Record({
+    const nextState = albumsReducer(defaultState, action);
+    const expected = new ReducerState({
       isFetching: false,
       entities: (new OrderedMap()).set(album.id, new AlbumRecord(album)),
     });
 
-    const expected = new ExpectedStateRecord();
-
-    expect(albumsReducer(defaultState, action).equals(expected)).toEqual(true);
+    expect(nextState).toEqual(expected);
   });
 
   it(ADD_ALBUM + SUCCESS, () => {
@@ -70,14 +68,13 @@ describe('reducer albums', () => {
       payload: album,
     };
 
-    const ExpectedStateRecord = Record({
+    const nextState = albumsReducer(defaultState, action);
+    const expected = new ReducerState({
       isFetching: false,
       entities: (new OrderedMap()).set(album.id, new AlbumRecord(album)),
     });
 
-    const expected = new ExpectedStateRecord();
-
-    expect(albumsReducer(defaultState, action).equals(expected)).toEqual(true);
+    expect(nextState).toEqual(expected);
   });
 
   it(EDIT_ALBUM + SUCCESS, () => {
@@ -87,15 +84,14 @@ describe('reducer albums', () => {
     };
 
     const state = defaultState.set('isFetching', true);
+    const nextState = albumsReducer(state, action);
 
-    const ExpectedStateRecord = Record({
+    const expected = new ReducerState({
       isFetching: true,
       entities: (new OrderedMap()).set(album.id, new AlbumRecord(album)),
     });
 
-    const expected = new ExpectedStateRecord();
-
-    expect(albumsReducer(state, action).equals(expected)).toEqual(true);
+    expect(nextState).toEqual(expected);
   });
 
   it(SET_COVER_ALBUM + SUCCESS, () => {
@@ -106,19 +102,18 @@ describe('reducer albums', () => {
 
     const albumWithOutCover = {
       ...album,
-      cover: '',
+      cover: null,
     };
 
     const state = defaultState.setIn(['entities', 1], new AlbumRecord(albumWithOutCover));
+    const nextState = albumsReducer(state, action);
 
-    const ExpectedStateRecord = Record({
+    const expected = new ReducerState({
       isFetching: false,
       entities: (new OrderedMap()).set(album.id, new AlbumRecord(album)),
     });
 
-    const expected = new ExpectedStateRecord();
-
-    expect(albumsReducer(state, action).equals(expected)).toBe(true);
+    expect(nextState).toEqual(expected);
   });
 
   it(SET_META_ALBUM, () => {
@@ -131,19 +126,20 @@ describe('reducer albums', () => {
       }
     };
 
-    const ExpectedStateRecord = Record({
+    const state = new ReducerState({
       isFetching: false,
       entities: (new OrderedMap()).set(album.id, new AlbumRecord(album)),
     });
 
-    const state = new ExpectedStateRecord();
+    const nextState = albumsReducer(state, action);
 
-    const expected = state.setIn(['entities', album.id, 'meta'], new AlbumMetaRecord({
+    const metaAlbum = new AlbumMetaRecord({
       'currentPage': action.payload.currentPage,
       'countPages': action.payload.countPages,
-    }));
+    });
+    const expected = state.setIn(['entities', album.id, 'meta'], metaAlbum);
 
-    expect(albumsReducer(state, action).equals(expected)).toBe(true);
+    expect(nextState).toEqual(expected);
   });
 
   it(DELETE_ALBUM + SUCCESS, () => {
@@ -154,12 +150,11 @@ describe('reducer albums', () => {
       }
     };
 
-    const StateRecord = Record({
+    const state = new ReducerState({
       isFetching: false,
       entities: (new OrderedMap()).set(album.id, new AlbumRecord(album)),
     });
 
-    const state = new StateRecord();
     const isHasAlbum = albumsReducer(state, action).hasIn(['entities', album.id]);
     expect(isHasAlbum).toBe(false);
   });
@@ -172,14 +167,14 @@ describe('reducer albums', () => {
       }
     };
 
-    const StateRecord = Record({
+    const state = new ReducerState({
       isFetching: false,
       entities: (new OrderedMap()).set(album.id, new AlbumRecord(album)),
     });
 
-    const state = new StateRecord();
+    const isFetchPhotos = albumsReducer(state, action).getIn(['entities', album.id, 'isFetchPhotos']);
 
-    expect(albumsReducer(state, action).getIn(['entities', album.id, 'isFetchPhotos'])).toBe(true);
+    expect(isFetchPhotos).toBe(true);
   });
 
 });
