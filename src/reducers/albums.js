@@ -34,7 +34,7 @@ export const AlbumRecord = new Record({
 
 const ReducerState = Record({
   isFetching: false,
-  entities: new OrderedMap({}),
+  entities: new OrderedMap(),
 });
 
 export const defaultState = new ReducerState();
@@ -52,7 +52,7 @@ export function albums(state = defaultState, action) {
     case ADD_ALBUM + SUCCESS:
       return state.setIn(['entities', payload.id], new AlbumRecord(payload));
     case EDIT_ALBUM + SUCCESS:
-      return state.mergeIn(['entities', payload.id], payload);
+      return state.setIn(['entities', payload.id], new AlbumRecord(payload));
     case SET_COVER_ALBUM + SUCCESS:
       return state.setIn(['entities', payload.id, 'cover'], payload.cover);
     case SET_META_ALBUM:
