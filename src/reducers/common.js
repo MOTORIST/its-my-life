@@ -17,7 +17,7 @@ const CommonRecord = new Record({
   snackbar: new SnackbarRecord(),
 });
 
-export const defaultState = new CommonRecord();
+const defaultState = new CommonRecord();
 
 export function common(state = defaultState, action) {
   const { type, payload } = action;
