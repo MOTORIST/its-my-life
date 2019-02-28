@@ -18,7 +18,7 @@ const ReducerState = new Record({
   entities: new OrderedMap(),
 });
 
-export const defaultState = new ReducerState();
+const defaultState = new ReducerState();
 
 export function photos(state = defaultState, action) {
   const { type, payload } = action;

@@ -1,8 +1,9 @@
-import {defaultState, PhotoRecord, photos as photosReducer} from './photos';
+import photos, {defaultState, PhotoRecord, photos as photosReducer} from './photos';
 import {OrderedMap} from 'immutable';
 import {ADD_PHOTO, DELETE_PHOTO, FETCH_PHOTOS, SUCCESS} from '../constants/ActionTypes';
 
 describe('reducer photo', () => {
+  const defaultState = photos.__get__('defaultState');
   const photo = {
     id: 1,
     albumId: 2,
@@ -23,8 +24,9 @@ describe('reducer photo', () => {
     };
 
     const expected = (new OrderedMap()).set(photo.id, new PhotoRecord(photo));
+    const nextState = photosReducer(defaultState, action);
 
-    expect(photosReducer(defaultState, action).get('entities').equals(expected)).toBe(true);
+    expect(nextState.get('entities')).toEqual(expected);
   });
 
   it(DELETE_PHOTO + SUCCESS, () => {
