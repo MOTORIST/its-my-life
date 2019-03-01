@@ -1,4 +1,4 @@
-import {LOAD_PHOTO_ADD_TO_LIST, LOAD_PHOTO_SET_PROGRESS, LOAD_PHOTO_SET_STATUS} from '../constants/ActionTypes';
+import {UPLOAD_PHOTO_ADD_TO_LIST, UPLOAD_PHOTO_SET_PROGRESS, UPLOAD_PHOTO_SET_STATUS} from '../constants/ActionTypes';
 import {defaultState, PhotoRecord, photosUpload as photosUploadReducer} from './photos-upload';
 import {OrderedMap} from 'immutable';
 
@@ -15,24 +15,21 @@ describe('reducer photos uploads', () => {
     progress: 0
   };
 
-  it(LOAD_PHOTO_ADD_TO_LIST, () => {
+  it(UPLOAD_PHOTO_ADD_TO_LIST, () => {
     const action = {
-      type: LOAD_PHOTO_ADD_TO_LIST,
+      type: UPLOAD_PHOTO_ADD_TO_LIST,
       payload: photo,
     };
 
     const expected = (new OrderedMap()).set(photo.id, new PhotoRecord(photo));
+    const nextState = photosUploadReducer(defaultState, action);
 
-    expect(
-      photosUploadReducer(defaultState, action)
-        .getIn(['entities'])
-        .equals(expected)
-    ).toBe(true);
+    expect(nextState.getIn(['entities'])).toEqual(expected);
   });
 
-  it(LOAD_PHOTO_SET_PROGRESS, () => {
+  it(UPLOAD_PHOTO_SET_PROGRESS, () => {
     const action = {
-      type: LOAD_PHOTO_SET_PROGRESS,
+      type: UPLOAD_PHOTO_SET_PROGRESS,
       payload: {
         id: photo.id,
         progress: 100,
@@ -40,13 +37,14 @@ describe('reducer photos uploads', () => {
     };
 
     const state = defaultState.setIn(['entities', photo.id], new PhotoRecord(photo));
+    const nextState = photosUploadReducer(state, action);
 
-    expect(photosUploadReducer(state, action).getIn(['entities', photo.id, 'progress'])).toBe(100);
+    expect(nextState.getIn(['entities', photo.id, 'progress'])).toBe(100);
   });
 
-  it(LOAD_PHOTO_SET_STATUS, () => {
+  it(UPLOAD_PHOTO_SET_STATUS, () => {
     const action = {
-      type: LOAD_PHOTO_SET_STATUS,
+      type: UPLOAD_PHOTO_SET_STATUS,
       payload: {
         id: photo.id,
         status: true,
@@ -54,7 +52,8 @@ describe('reducer photos uploads', () => {
     };
 
     const state = defaultState.setIn(['entities', photo.id], new PhotoRecord(photo));
+    const nextState = photosUploadReducer(state, action);
 
-    expect(photosUploadReducer(state, action).getIn(['entities', photo.id, 'status']));
+    expect(nextState.getIn(['entities', photo.id, 'status'])).toBe(true);
   });
 });
