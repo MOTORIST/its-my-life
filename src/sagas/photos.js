@@ -88,7 +88,7 @@ function* editPhotoSaga({id, values}) {
       yield put(snackbarSuccess('Photo changed.'));
     }
   } catch (e) {
-    yield put(snackbarError('Error! Unable to load data photo.'));
+    yield put(snackbarError('Error! Failed to change data photo.'));
   }
 }
 

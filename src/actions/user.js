@@ -40,10 +40,10 @@ export function fetchUser() {
   }
 }
 
-export function fetchUserSuccess(profile) {
+export function fetchUserSuccess(user) {
   return {
     type: FETCH_USER + SUCCESS,
-    payload: profile
+    payload: user,
   }
 }
 
@@ -54,10 +54,10 @@ export function editUser(values) {
   }
 }
 
-export function editUserSuccess(profile) {
+export function editUserSuccess(user) {
   return {
     type: EDIT_USER + SUCCESS,
-    payload: profile,
+    payload: user,
   }
 }
 

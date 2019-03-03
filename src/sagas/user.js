@@ -78,7 +78,7 @@ function* forgotPasswordSaga({email}) {
 function* resetPasswordSaga({token, password, password_confirmation}) {
   try {
     yield call(webAPI, '/password/reset', POST, {token, password, password_confirmation});
-    yield put(snackbarSuccess(`Password changed.`));
+    yield put(snackbarSuccess('Password changed.'));
     yield call(history.push, '/sign-in');
   } catch (e) {
     yield put(snackbarError('Error! Password failed to change.'));

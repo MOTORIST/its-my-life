@@ -81,15 +81,15 @@ describe('sagas photos-load', () => {
       {id: '01', formData},
       {id: '02', formData}
     ];
-    const generator = cloneableGenerator(photosLoad.__get__('loadFilesSaga'))({dataPhotos});
+    const generator = cloneableGenerator(photosLoad.__get__('uploadFilesSaga'))({dataPhotos});
 
-    it('should call saga uploadPhotoSaga 01', function () {
+    it('should call saga uploadPhotoSaga 01', () => {
       const uploadPhotoSaga = photosLoad.__get__('uploadPhotoSaga');
       const photo = dataPhotos[0];
       expect(generator.next().value).toEqual(call(uploadPhotoSaga, photo.id, photo.formData));
     });
 
-    it('should call saga uploadPhotoSaga 02', function () {
+    it('should call saga uploadPhotoSaga 02', () =>  {
       const uploadPhotoSaga = photosLoad.__get__('uploadPhotoSaga');
       const photo = dataPhotos[1];
       expect(generator.next().value).toEqual(call(uploadPhotoSaga, photo.id, photo.formData));
