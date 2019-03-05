@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/MOTORIST/its-my-life/tree/master.svg?style=svg)](https://circleci.com/gh/MOTORIST/its-my-life/tree/master)
+[![codecov](https://codecov.io/gh/MOTORIST/its-my-life/branch/master/graph/badge.svg)](https://codecov.io/gh/MOTORIST/its-my-life)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
