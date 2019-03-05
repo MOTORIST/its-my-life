@@ -39,6 +39,9 @@
   ],
   "devDependencies": {
     "@craco/craco": "^3.4.1",
-    "babel-plugin-rewire": "^1.2.0"
+    "babel-plugin-rewire": "^1.2.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.10.0",
+    "enzyme-to-json": "^3.3.5"
   }
 }
