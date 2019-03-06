@@ -1,5 +1,7 @@
 import {
-  UPLOAD_PHOTO_ADD_TO_LIST, UPLOAD_PHOTO_CLEAR_ALL_STORE, UPLOAD_PHOTO_CLEAR_STORE,
+  UPLOAD_PHOTO_ADD_TO_LIST,
+  UPLOAD_PHOTO_CLEAR_ALL_STORE,
+  UPLOAD_PHOTO_CLEAR_PHOTO,
   UPLOAD_PHOTO_SET_PROGRESS,
   UPLOAD_PHOTO_SET_STATUS,
   UPLOAD_PHOTOS
@@ -41,7 +43,7 @@ export function setStatus(id, status) {
 
 export function clearPhotoInStore(id) {
   return {
-    type: UPLOAD_PHOTO_CLEAR_STORE,
+    type: UPLOAD_PHOTO_CLEAR_PHOTO,
     payload: {
       id: id,
     }
