@@ -45,9 +45,10 @@ export function user(state = defaultState, action) {
 
   switch (type) {
     case FETCH_USER + SUCCESS:
-      return state.merge(payload);
+      return state.merge(payload).set('isAuth', true);
     case EDIT_USER + SUCCESS:
       updateUserLocalStorage(payload);
+      console.log('---- state.merge(payload);');
       return state.merge(payload);
     case LOGIN + SUCCESS:
       const user = {

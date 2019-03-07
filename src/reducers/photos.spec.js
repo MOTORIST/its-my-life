@@ -1,9 +1,11 @@
-import photos, {defaultState, PhotoRecord, photos as photosReducer} from './photos';
+import photos, {PhotoRecord, photos as photosReducer} from './photos';
 import {OrderedMap} from 'immutable';
-import {ADD_PHOTO, DELETE_PHOTO, FETCH_PHOTOS, SUCCESS} from '../constants/ActionTypes';
+import {ADD_PHOTO, DELETE_PHOTO, EDIT_PHOTO, FETCH_PHOTO, FETCH_PHOTOS, SUCCESS} from '../constants/ActionTypes';
 
 describe('reducer photo', () => {
   const defaultState = photos.__get__('defaultState');
+  const ReducerState = photos.__get__('ReducerState');
+
   const photo = {
     id: 1,
     albumId: 2,
@@ -48,8 +50,54 @@ describe('reducer photo', () => {
       payload: photo,
     };
 
-    const expected = new PhotoRecord(photo);
+    expect(photosReducer(defaultState, action).hasIn(['entities', photo.id])).toBe(true);
+  });
 
-    expect(photosReducer(defaultState, action).getIn(['entities', photo.id]).equals(expected)).toBe(true);
+  it(EDIT_PHOTO + SUCCESS, () => {
+    const dataEditPhoto = {
+      id: photo.id,
+      title: "New title.",
+    };
+
+    const expectedPhoto = {
+        ...photo,
+        ...dataEditPhoto,
+    };
+
+    const action = {
+      type: EDIT_PHOTO + SUCCESS,
+      payload: dataEditPhoto,
+    };
+
+    const state = new ReducerState({
+      entities: (new OrderedMap()).set(photo.id, new PhotoRecord(photo)),
+    });
+
+    const expected = new ReducerState({
+      entities: (new OrderedMap()).set(photo.id, new PhotoRecord(expectedPhoto)),
+    });
+
+    const nextState = photosReducer(state, action);
+
+    expect(nextState).toEqual(expected);
+  });
+
+  it(FETCH_PHOTO + SUCCESS, () => {
+    const action = {
+      type: FETCH_PHOTO + SUCCESS,
+      payload: photo,
+    };
+
+    const state = new ReducerState({
+      entities: (new OrderedMap()).set(photo.id, new PhotoRecord(photo)),
+    });
+
+    const nextState = photosReducer(state, action);
+
+    const expected = new ReducerState({
+      entities: (new OrderedMap()).set(photo.id, new PhotoRecord(photo)),
+    });
+
+    expect(nextState).toEqual(expected);
   });
 });

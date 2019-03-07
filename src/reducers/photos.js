@@ -33,7 +33,7 @@ export function photos(state = defaultState, action) {
     case EDIT_PHOTO + SUCCESS:
       return state.mergeIn(['entities', payload.id], payload);
     case FETCH_PHOTO + SUCCESS:
-      return state.mergeIn(['entities', payload.id], payload);
+      return state.setIn(['entities', payload.id], new PhotoRecord(payload));
     default:
       return state;
   }
