@@ -2,6 +2,15 @@ import {EDIT_USER, FETCH_USER, LOGIN, LOGOUT, SUCCESS} from '../constants/Action
 import {Record} from 'immutable';
 
 const UserRecord = new Record({
+  isAuth: true,
+  name: null,
+  access_token: null,
+  avatar: null,
+  group: null,
+  email: null,
+});
+
+export const EditUserRecord = new Record({
   isAuth: false,
   name: null,
   access_token: null,
@@ -35,7 +44,7 @@ function updateUserLocalStorage(user) {
 }
 
 function setDefaultState(userLocalStorage) {
-  return userLocalStorage ? new UserRecord(userLocalStorage) : new UserRecord();
+  return userLocalStorage ? new UserRecord(userLocalStorage) : new UserRecord({isAuth: false});
 }
 
 const defaultState = setDefaultState(getUserLocalStorage());
@@ -47,20 +56,16 @@ export function user(state = defaultState, action) {
     case FETCH_USER + SUCCESS:
       return state.merge(payload).set('isAuth', true);
     case EDIT_USER + SUCCESS:
-      updateUserLocalStorage(payload);
-      console.log('---- state.merge(payload);');
-      return state.merge(payload);
+      const editUser = new UserRecord(payload);
+      updateUserLocalStorage(editUser.toJS());
+      return state.merge(new UserRecord(payload));
     case LOGIN + SUCCESS:
-      const user = {
-        isAuth: true,
-        name: payload.name,
-        access_token: payload.access_token
-      };
-      setUserLocalStorage(user);
-      return new UserRecord(user);
+      const user = new UserRecord(payload);
+      setUserLocalStorage(user.toJS());
+      return user;
     case LOGOUT + SUCCESS:
       removeUserLocalStorage();
-      return new UserRecord();
+      return new UserRecord({isAuth: false});
     default:
       return state;
   }

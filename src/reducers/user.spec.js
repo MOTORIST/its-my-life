@@ -57,12 +57,12 @@ describe('reducer user', () => {
     const setDefaultState = user.__get__('setDefaultState');
 
     it('if is set user to local storage', () => {
-      const expected = new  UserRecord(userData);
+      const expected = new UserRecord(userData);
       expect(setDefaultState(userData)).toEqual(expected);
     });
 
     it('if is not set user to local storage', () => {
-      const expected = new  UserRecord();
+      const expected = new UserRecord({isAuth: false});
       expect(setDefaultState(null)).toEqual(expected);
     });
   });
@@ -88,16 +88,17 @@ describe('reducer user', () => {
   });
 
   it(EDIT_USER + SUCCESS, () => {
-    const newUser = {name: 'New name'};
+    const newData = {name: 'New name'};
     const action = {
       type: EDIT_USER + SUCCESS,
-      payload: newUser,
+      payload: newData,
     };
 
     const nextState = userReducer(defaultState, action);
-    const expected = new UserRecord({name: 'New name'});
+    const expected = new UserRecord(newData);
 
     expect(nextState).toEqual(expected);
+    expect(getUserLocalStorage()).toEqual(expected.toJS());
   });
 
   it(LOGIN + SUCCESS, () => {
@@ -131,7 +132,7 @@ describe('reducer user', () => {
       group: null,
     });
 
-    const expected = new UserRecord();
+    const expected = new UserRecord({isAuth: false});
 
     expect(userReducer(state, action)).toEqual(expected);
   });

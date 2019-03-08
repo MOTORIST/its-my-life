@@ -11,6 +11,7 @@ import {renderTextField} from '../../helpers/form';
 import {Field, reduxForm} from 'redux-form/immutable';
 import {editUser, fetchUser} from '../../actions/user';
 import styles from './styles';
+import {EditUserRecord} from '../../reducers/user';
 
 const validate = (values) => {
   const password = values.get('password');
@@ -108,7 +109,7 @@ class ProfileEditForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    initialValues: state.user,
+    initialValues: new EditUserRecord(state.user),
   }
 }
 
