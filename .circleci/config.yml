@@ -1,9 +1,13 @@
 version: 2.1
+executors:
+  defaults:
+    docker:
+      - image: circleci/openjdk:8-jdk-node-browsers
+    working_directory: ~/its-my-life
 
 jobs:
   build:
-    docker:
-      - image: circleci/openjdk:8-jdk-node-browsers
+    executor: defaults
     steps:
       - checkout
       - run:
@@ -27,3 +31,40 @@ jobs:
           when: on_success
           command: |
             bash <(curl -s https://codecov.io/bash) -Z -C $CIRCLE_SHA1
+      - run:
+          name: Build
+          when: on_success
+          command: |
+            yarn build
+      - persist_to_workspace:
+          root: .
+          paths: .
+  deploy:
+    executor: defaults
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "51:82:9f:88:37:12:a6:4a:09:b0:5d:a7:d5:3e:99:f5"
+      - attach_workspace:
+          at: ~/its-my-life
+      - run:
+          name: 'Install rsync'
+          command: |
+            sudo apt-get update && sudo apt-get install rsync
+      - run:
+          name: 'Copying project to server'
+          command: |
+            rsync -avc -e "ssh -o StrictHostKeyChecking=no" --rsync-path="sudo rsync"  --exclude='.git' --exclude='.circleci' --delete ~/its-my-life/build ${USER_SSH}@${HOST}:${REMOTE_PATH}
+
+workflows:
+  version: 2.1
+  notify_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
