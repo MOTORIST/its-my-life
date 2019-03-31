@@ -3,7 +3,7 @@ const dev = {
 };
 
 const prod = {
-  API_URL: 'http://localhost:8080/api',
+  API_URL: 'http://84.201.150.106:8080/api',
 };
 
 const config = process.env.REACT_APP_STAGE === 'production' ? prod : dev;
