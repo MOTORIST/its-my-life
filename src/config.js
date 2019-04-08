@@ -1,9 +1,11 @@
 const dev = {
-  API_URL: 'http://localhost:8080/api',
+  API_URL: 'http://api.localhost/api',
+  MAX_SIZE_UPLOAD_FILE: 2000,
 };
 
 const prod = {
-  API_URL: 'http://84.201.150.106:8080/api',
+  API_URL: 'https://itsmylife.space/api',
+  MAX_SIZE_UPLOAD_FILE: 5000,
 };
 
 const config = process.env.NODE_ENV === 'production' ? prod : dev;

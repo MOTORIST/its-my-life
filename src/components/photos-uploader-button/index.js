@@ -17,7 +17,7 @@ PhotosUploaderButton.propTypes = {
 };
 
 PhotosUploaderButton.defaultProps = {
-  maxFileSizeKb: 2000,
+  maxFileSizeKb: 3000,
 };
 
 function PhotosUploaderButton({albumId, maxFileSizeKb, handleLoadFile, className, dispatch}) {

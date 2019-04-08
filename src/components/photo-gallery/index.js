@@ -10,6 +10,7 @@ import PhotoMasonry from '../photo-masonry';
 import DialogPhotos from '../dialog-photos';
 import PhotosUploader from '../photos-uploader';
 import PhotosUploaderButton from '../photos-uploader-button';
+import config from '../../config';
 
 class PhotoGallery extends Component {
   classes = this.props.classes;
@@ -160,7 +161,7 @@ class PhotoGallery extends Component {
     const photosUploaderButton = (
       <PhotosUploaderButton
         albumId={album.id}
-        maxFileSizeKb={2000}
+        maxFileSizeKb={config.MAX_SIZE_UPLOAD_FILE}
         className={this.classes.uploadButton}
         handleLoadFile={this.handleLoadFile}
       />
