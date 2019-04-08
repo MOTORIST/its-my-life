@@ -23,10 +23,6 @@ const initAxios = () => {
 };
 
 const handleErrors = (e) => {
-  if(!e.response) {
-    return;
-  }
-
   switch(e.response.status) {
     case 404:
       history.push('/not-found');
