@@ -27,17 +27,17 @@ class DialogPhotos extends Component {
   }
 
   handleOnKeyDownRightButton = (e) => {
-    const {handleNextPhoto, isNextPhoto} = this.props;
+    const {isOpen, handleNextPhoto, isNextPhoto} = this.props;
 
-    if (isNextPhoto && e.keyCode === 39) {
+    if (isOpen && isNextPhoto && e.keyCode === 39) {
       handleNextPhoto();
     }
   };
 
   handleOnKeyDownLeftButton = (e) => {
-    const {handlePrevPhoto, isPrevPhoto} = this.props;
+    const {isOpen, handlePrevPhoto, isPrevPhoto} = this.props;
 
-    if (isPrevPhoto && e.keyCode === 37) {
+    if (isOpen && isPrevPhoto && e.keyCode === 37) {
       handlePrevPhoto();
     }
   };
