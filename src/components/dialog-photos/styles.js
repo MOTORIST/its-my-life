@@ -1,5 +1,8 @@
+const colorText = 'white';
+
 const styles = theme => ({
   wrapperPhoto: {
+    backgroundColor: 'black',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -8,23 +11,49 @@ const styles = theme => ({
     },
     height: '100%',
     textAlign: 'center',
-  },
-  photo: {
-    maxWidth: '100%',
     userSelect: 'none',
-    maxHeight: '90vh',
   },
   prevButton: {
+    color: colorText,
     alignSelf: 'stretch',
   },
   nextButton: {
+    color: colorText,
     alignSelf: 'stretch',
+  },
+  closeButton: {
+    color: colorText,
+  },
+  topSideBar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: 'black',
+    userSelect: 'none',
+    [theme.breakpoints.down('sm')]: {
+      position: 'absolute',
+      top: 0,
+      width: '100%',
+      zIndex: 1000,
+    },
+  },
+  title: {
+    margin: '0 auto',
+    color: colorText,
+    justifyContent: 'center',
+  },
+  counter: {
+    color: colorText,
+    margin: `auto ${theme.spacing.unit * 2}px`,
+  },
+  photoExif: {
+    color: colorText,
   },
   preLoaderImage: {
     textAlign: 'center',
   },
   swipe: {
     width: '100%',
-  }
+  },
 });
 export default styles;

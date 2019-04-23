@@ -2,6 +2,21 @@ import {ADD_PHOTO, DELETE_PHOTO, EDIT_PHOTO, FETCH_PHOTO, FETCH_PHOTOS, SUCCESS}
 import {arrToMap} from '../helpers/utils';
 import {OrderedMap, Record} from 'immutable';
 
+const metaExif = {
+  camera: null,
+  aperture: null,
+  gps: null,
+  exposure: null,
+  focusDistance: null,
+  iso: null,
+  focalLength: null,
+  orientation: null,
+  mimeType: null,
+  software: null,
+  flash: null,
+  creationDate: null
+};
+
 export const PhotoRecord = new Record({
   id: null,
   albumId: null,
@@ -12,6 +27,7 @@ export const PhotoRecord = new Record({
   thumbnail: '',
   thumbWidth: '',
   thumbHeight: '',
+  metaExif
 });
 
 const ReducerState = new Record({

@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import Swipe from '../swipe';
 import {isMobileOrTablet} from '../../helpers/mobile-detect';
 import PreloadImage from '../preload-image';
+import PhotoExifMeta from "../photo-exif-meta";
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 
 class DialogPhotos extends Component {
   isMobile = false;
@@ -60,7 +63,7 @@ class DialogPhotos extends Component {
   };
 
   render() {
-    const {isOpen, currentPhoto, handleClose, handlePrevPhoto, handleNextPhoto, isPrevPhoto, isNextPhoto, classes} = this.props;
+    const {isOpen, currentPhoto, handleClose, handlePrevPhoto, handleNextPhoto, isPrevPhoto, isNextPhoto, currentPhotoIndex, classes} = this.props;
 
     const renderButtonPrev = !this.isMobile ? (
       <Button
@@ -82,9 +85,14 @@ class DialogPhotos extends Component {
       </Button>
     ) : null;
 
-    const renderButtonClose = !this.isMobile ? (
-      <Button onClick={handleClose}>Close</Button>
-    ) : null;
+    const renderButtonClose = (() => (
+      <IconButton
+        onClick={handleClose}
+        className={classes.closeButton}
+      >
+        <CloseIcon/>
+      </IconButton>
+    ))();
 
     const renderDataPhoto = (() => {
       if (!currentPhoto) {
@@ -99,17 +107,30 @@ class DialogPhotos extends Component {
           className={classes.swipe}
         >
           <PreloadImage image={currentPhoto.image} alt={currentPhoto.title}/>
-          <Typography variant="body2" align="center">
-            {currentPhoto.title}
-          </Typography>
+          <PhotoExifMeta data={currentPhoto.metaExif} className={classes.photoExif}/>
         </Swipe>
       );
     })();
 
+    const counter = (() => (
+      <Typography variant="caption" align="center" className={classes.counter}>
+        {currentPhotoIndex + 1}
+      </Typography>
+    ))();
+
+    const title = (() => (
+      <Typography variant="body1" align="center" className={classes.title}>
+        {currentPhoto.title}
+      </Typography>
+    ))();
+
     return (
       <Dialog open={isOpen} onClose={handleClose} fullScreen>
-        {renderButtonClose}
-
+        <div className={classes.topSideBar}>
+          {counter}
+          {title}
+          {renderButtonClose}
+        </div>
         <div className={classes.wrapperPhoto}>
           {renderButtonPrev}
           {renderDataPhoto}
@@ -133,6 +154,7 @@ const photoPropType = PropTypes.shape({
 DialogPhotos.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   currentPhoto: photoPropType,
+  currentPhotoIndex: PropTypes.number,
   handleClose: PropTypes.func.isRequired,
   handlePrevPhoto: PropTypes.func.isRequired,
   handleNextPhoto: PropTypes.func.isRequired,

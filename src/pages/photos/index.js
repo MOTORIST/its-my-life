@@ -26,8 +26,6 @@ class Photos extends Component {
 
   render() {
     const {match, photos, album} = this.props;
-    //console.log('---- photos', photos);
-    //console.log('---- photos arry', photos.valueSeq().toJS());
 
     return (
       <PhotoGallery

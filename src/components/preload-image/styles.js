@@ -2,7 +2,7 @@ const styles = () => ({
   img: {
     maxWidth: '100%',
     userSelect: 'none',
-    maxHeight: '90vh',
+    maxHeight: '85vh',
   },
   preloader: {
     textAlign: 'center',

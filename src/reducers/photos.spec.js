@@ -13,7 +13,21 @@ describe('reducer photo', () => {
     image: "http://localhost:8080/storage/photos/1/46tH7HDIBR1t8td7OiejCgZLUxpRa5KVGkDamnb2.jpeg",
     thumbnail: "http://localhost:8080/storage/photos/1/thumb_46tH7HDIBR1t8td7OiejCgZLUxpRa5KVGkDamnb2.jpeg",
     thumbWidth: 300,
-    thumbHeight: 200
+    thumbHeight: 200,
+    metaExif: {
+      camera: "Canon EOS 40D",
+      aperture: "f/1.4",
+      gps: null,
+      exposure: "1/197",
+      focusDistance: null,
+      iso: 1600,
+      focalLength: 50,
+      orientation: 1,
+      mimeType: "image/jpeg",
+      software: null,
+      flash: 16,
+      creationDate: "2013-01-01 16:11:08"
+    }
   };
 
   it(FETCH_PHOTOS + SUCCESS, () => {

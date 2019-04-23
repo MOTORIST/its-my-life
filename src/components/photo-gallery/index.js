@@ -148,6 +148,7 @@ class PhotoGallery extends Component {
         isPrevPhoto={this.isPrevPhoto()}
         isNextPhoto={this.isNextPhoto()}
         currentPhoto={this.state.currentPhoto}
+        currentPhotoIndex={this.state.currentPhotoIndex}
       />
     );
 
@@ -234,6 +235,7 @@ PhotoGallery.propTypes = {
   albumId: PropTypes.number.isRequired,
   album: PropTypes.oneOfType([PropTypes.number, albumPropType]),
   photos: PropTypes.arrayOf(photoPropType),
+  //totalPhotos: PropTypes.number.isRequired,
 };
 
 export default compose(
