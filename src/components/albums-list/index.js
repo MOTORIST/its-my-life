@@ -24,7 +24,7 @@ class AlbumsList extends Component {
 
   componentDidMount() {
     const {isFetching, dispatch} = this.props;
-    if(!isFetching) {
+    if (!isFetching) {
       dispatch(fetchAlbums());
     }
   }
@@ -42,25 +42,29 @@ class AlbumsList extends Component {
     })
   };
 
-  render () {
+  render() {
     const {albums, user} = this.props;
 
-    if(albums.size === 0) {
-      return null;
-    }
+    const gridItems = (() => {
+      const list = [];
 
-    const list = [];
+      if (albums.size === 0) {
+        return null;
+      }
 
-    albums.forEach(album => {
-      list.push(
-        <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={album.id}>
-          <AlbumListItem album={album} openDialogAddAlbum={this.handleOpenDialogAddAlbum} />
-        </Grid>
-      );
-    });
+      albums.forEach(album => {
+        list.push(
+          <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={album.id}>
+            <AlbumListItem album={album} openDialogAddAlbum={this.handleOpenDialogAddAlbum}/>
+          </Grid>
+        );
+      });
+
+      return list;
+    })();
 
     const buttonAddAlbum = (() => {
-      if(!user.isAuth) {
+      if (!user.isAuth) {
         return null;
       }
 
@@ -71,13 +75,13 @@ class AlbumsList extends Component {
           aria-label="Add"
           onClick={this.handleOpenDialogAddAlbum}
         >
-          <AddIcon />
+          <AddIcon/>
         </Fab>
       );
     })();
 
-    const dialogAddAlbum = (()=> {
-      if(!user.isAuth) {
+    const dialogAddAlbum = (() => {
+      if (!user.isAuth) {
         return null;
       }
 
@@ -93,7 +97,7 @@ class AlbumsList extends Component {
     return (
       <React.Fragment>
         <Grid container spacing={24}>
-          {list}
+          {gridItems}
         </Grid>
         {buttonAddAlbum}
         {dialogAddAlbum}
