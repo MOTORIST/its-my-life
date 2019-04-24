@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Swipe from '../swipe';
 import {isMobileOrTablet} from '../../helpers/mobile-detect';
 import PreloadImage from '../preload-image';
-import PhotoExifMeta from "../photo-exif-meta";
+import PhotoExifMeta from '../photo-exif-meta';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 

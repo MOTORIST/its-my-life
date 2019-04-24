@@ -5,7 +5,7 @@ const dev = {
 
 const prod = {
   API_URL: 'https://api.itsmylife.space/api',
-  MAX_SIZE_UPLOAD_FILE: 5000,
+  MAX_SIZE_UPLOAD_FILE: 10000,
 };
 
 const config = process.env.NODE_ENV === 'production' ? prod : dev;
