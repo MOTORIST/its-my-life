@@ -4,9 +4,9 @@
     <% if (process.env.NODE_ENV === 'production') { %>
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self' *.itsmylife.space;
-      style-src 'self';
+      style-src 'self' 'unsafe-inline';
       script-src 'self';
-      img-src 'self' *.itsmylife.space data: blob:;
+      img-src 'self' *.itsmylife.space itsmylife-storage.storage.yandexcloud.net data: blob:;
     ">
     <% } %>
     <meta charset="utf-8"/>
