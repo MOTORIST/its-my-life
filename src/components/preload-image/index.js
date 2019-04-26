@@ -27,7 +27,7 @@ class PreloadImage extends Component {
 
   render() {
     const {image, title, classes} = this.props;
-    const renderPreloader = (<CircularProgress size={48} color="inherit"/>);
+    const renderPreloader = (<CircularProgress size={48} color="secondary"/>);
 
     return (
       <div>
