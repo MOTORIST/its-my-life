@@ -40,7 +40,7 @@ class AlbumListItem extends Component {
 
   handleOnKeyDownEnterButton = (e) => {
     if(this.state.openDialogConfirm && e.keyCode === 13) {
-      this.handleDeleteAlbum(e);
+      this.handleDeleteAlbum();
 
       this.setState({
         openDialogConfirm: false,
@@ -54,8 +54,7 @@ class AlbumListItem extends Component {
     openDialogAddAlbum(e, album.id);
   };
 
-  handleDeleteAlbum = (e) => {
-    e.stopPropagation();
+  handleDeleteAlbum = () => {
     const {dispatch, album} = this.props;
     dispatch(deleteAlbum(album.id));
   };
@@ -67,9 +66,9 @@ class AlbumListItem extends Component {
     });
   };
 
-  handleCloseConfirm = (e, value) => {
+  handleCloseConfirm = (value) => {
     if(value) {
-      this.handleDeleteAlbum(e);
+      this.handleDeleteAlbum(value);
     }
 
     this.setState({
