@@ -9,9 +9,6 @@ const style = () => ({
   media: {
     backgroundColor: 'gray',
   },
-  buttonRed: {
-    color: 'red',
-  },
 });
 
 export default style;

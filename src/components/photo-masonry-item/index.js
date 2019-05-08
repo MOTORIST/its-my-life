@@ -9,17 +9,18 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActionsTop from '../card-actions-top';
 import DialogConfirmation from '../dialog-confirmation';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CheckIcon from '@material-ui/icons/PhotoLibrary';
-import EditIcon from '@material-ui/icons/Edit';
-import Tooltip from '@material-ui/core/Tooltip';
 import {deletePhoto} from '../../actions/photos';
 import {setCover} from '../../actions/albums';
+import DeleteButton from './deleteButton';
+import SetCoverButton from './setCoverButton';
+import EditButton from './editButton';
+import DialogEditPhoto from '../dialog-edit-photo';
 
 class PhotoMasonryItem extends Component {
   state = {
     openDialogConfirm: false,
+    openDialogEditPhoto: false,
+    editPhotoId: null,
   };
 
   componentDidMount() {
@@ -46,14 +47,14 @@ class PhotoMasonryItem extends Component {
     dispatch(setCover(photo.albumId, photo.id));
   };
 
-  handleConfirm = (e) => {
+  handleDeleteConfirm = (e) => {
     e.stopPropagation();
     this.setState({
       openDialogConfirm: true,
     });
   };
 
-  handleCloseConfirm = (value) => {
+  handleCloseDeleteConfirm = (value) => {
     if(value) {
       this.deletePhoto();
     }
@@ -63,58 +64,59 @@ class PhotoMasonryItem extends Component {
     });
   };
 
+  handleEditPhoto = (e) => {
+    e.stopPropagation();
+
+    this.setState({
+      openDialogEditPhoto: true,
+      editPhotoId: this.props.photo.id,
+    });
+  };
+
+  handleCloseDialogEditPhoto = () => {
+    this.setState({
+      openDialogEditPhoto: false,
+    });
+  };
+
   deletePhoto = () => {
     const {photo, dispatch} = this.props;
     dispatch(deletePhoto(photo.id));
   };
 
-  handleEditPhoto = (e) => {
-    e.stopPropagation();
-    const {handleEditPhoto, photo} = this.props;
-    handleEditPhoto(photo.id);
-  };
-
   render() {
-    const {photo, isShowActions, classes} = this.props;
+    const {photo, isAuth, classes} = this.props;
     return (
       <Card className={classes.card}>
         <CardMedia
           className={classes.media}
           image={photo.thumbnail}
           title={photo.title}
-          style={{
-            height: photo.thumbHeight,
-          }}
+          style={{height: photo.thumbHeight}}
         />
-        <CardActionsTop show={isShowActions}>
-          <Tooltip title="Delete photo">
-            <IconButton onClick={this.handleConfirm}>
-              <DeleteIcon className={classes.buttonRed}/>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Set album cover">
-            <IconButton
-              color="primary"
-              onClick={this.handleSetAlbumCover}
-            >
-            <CheckIcon/>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit photo">
-            <IconButton
-              color="primary"
-              onClick={this.handleEditPhoto}
-            >
-              <EditIcon/>
-            </IconButton>
-          </Tooltip>
+
+        <CardActionsTop show={isAuth}>
+          <DeleteButton handler={this.handleDeleteConfirm}/>
+          <SetCoverButton handler={this.handleSetAlbumCover}/>
+          <EditButton handler={this.handleEditPhoto}/>
         </CardActionsTop>
+
+        {isAuth &&
         <DialogConfirmation
           open={this.state.openDialogConfirm}
-          onClose={this.handleCloseConfirm}
+          onClose={this.handleCloseDeleteConfirm}
           title="Are you sure?"
           text="You want to delete a photo?"
         />
+        }
+
+        {isAuth &&
+        <DialogEditPhoto
+          isOpen={this.state.openDialogEditPhoto}
+          idPhoto={this.state.editPhotoId}
+          handleClose={this.handleCloseDialogEditPhoto}
+        />
+        }
       </Card>
     );
   }
@@ -130,7 +132,7 @@ PhotoMasonryItem.propTypes = {
     thumbHeight: PropTypes.number.isRequired,
     title: PropTypes.string,
   }).isRequired,
-  isShowActions: PropTypes.bool.isRequired,
+  isAuth: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
 };

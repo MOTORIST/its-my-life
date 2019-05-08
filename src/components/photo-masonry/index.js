@@ -6,9 +6,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '@material-ui/core/styles/withTheme';
 import Masonry from 'react-masonry-component';
 import VisibilitySensor from 'react-visibility-sensor';
-import {fetchPhoto, fetchPhotos} from '../../actions/photos';
+import {fetchPhotos} from '../../actions/photos';
 import PhotoMasonryItem from '../photo-masonry-item';
-import DialogEditPhoto from '../dialog-edit-photo';
+import config from '../../config';
 
 const style = (theme) => ({
   masonryItem: {
@@ -20,11 +20,9 @@ class PhotoMasonry extends Component {
   classes = this.props.classes;
 
   state = {
-    widthItem: 300,
-    defaultWidthItem: 300,
+    widthItem: config.MASONRY_ITEM_WIDTH,
+    defaultWidthItem: config.MASONRY_ITEM_WIDTH,
     isOpenDialogAddAlbum: false,
-    openDialogEditPhoto: false,
-    editPhotoId: null,
   };
 
   componentDidMount() {
@@ -42,7 +40,7 @@ class PhotoMasonry extends Component {
 
   handleLoadMore = (isVisibility) => {
     const {album, dispatch} = this.props;
-    
+
     if(!album.meta) {
       return;
     }
@@ -54,21 +52,6 @@ class PhotoMasonry extends Component {
       const page = currentPage + 1;
       dispatch(fetchPhotos(album.id, page));
     }
-  };
-
-  handleEditPhoto = (idPhoto) => {
-    this.props.dispatch(fetchPhoto(idPhoto));
-
-    this.setState({
-      openDialogEditPhoto: true,
-      editPhotoId: idPhoto,
-    });
-  };
-
-  handleCloseDialogEditPhoto = () => {
-    this.setState({
-      openDialogEditPhoto: false,
-    });
   };
 
   calculateWidthItem = () => {
@@ -106,8 +89,7 @@ class PhotoMasonry extends Component {
         >
           <PhotoMasonryItem
             photo={photo}
-            handleEditPhoto={this.handleEditPhoto}
-            isShowActions={isAuth}
+            isAuth={isAuth}
           />
         </div>
       );
@@ -118,11 +100,6 @@ class PhotoMasonry extends Component {
           <Masonry options={masonryOptions}>
             {items}
           </Masonry>
-          <DialogEditPhoto
-            isOpen={this.state.openDialogEditPhoto}
-            idPhoto={this.state.editPhotoId}
-            handleClose={this.handleCloseDialogEditPhoto}
-          />
           <VisibilitySensor onChange={this.handleLoadMore}><div>&nbsp;</div></VisibilitySensor>
         </div>
     );

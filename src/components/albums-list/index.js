@@ -54,7 +54,7 @@ class AlbumsList extends Component {
 
       albums.forEach(album => {
         list.push(
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={album.id}>
+          <Grid item xs={12} sm={6} md={4} lg={2} xl={2} key={album.id}>
             <AlbumListItem album={album} openDialogAddAlbum={this.handleOpenDialogAddAlbum}/>
           </Grid>
         );
