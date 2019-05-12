@@ -11,8 +11,8 @@ import PhotoMasonryItem from '../photo-masonry-item';
 import config from '../../config';
 
 const style = (theme) => ({
-  masonryItem: {
-    margin: theme.spacing.unit,
+  root: {
+    marginLeft: theme.spacing.unit * 2,
   },
 });
 
@@ -26,17 +26,15 @@ class PhotoMasonry extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener("resize", this.handleResize);
+    window.addEventListener("resize", this.calculateWidthItem);
     this.calculateWidthItem();
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener("resize", this.calculateWidthItem);
   }
 
   setContainerRef = conteiner => this.containerRef = conteiner;
-
-  handleResize = () => this.calculateWidthItem();
 
   handleLoadMore = (isVisibility) => {
     const {album, dispatch} = this.props;
@@ -67,37 +65,30 @@ class PhotoMasonry extends Component {
     });
   };
 
-  render() {
-    const {photos, handleOpenDialog, isAuth} = this.props;
-    const masonryOptions = {
-      transitionDuration: 0,
-      gutter: 0,
-    };
+  masonryOptions = () => ({
+    transitionDuration: '0.4s',
+    gutter: this.props.theme.spacing.unit * 2,
+  });
 
+  render() {
+    const {photos, handleOpenDialog, isAuth, classes} = this.props;
     let items = [];
 
     photos.forEach((photo, index) => {
       items.push(
-        <div
+        <PhotoMasonryItem
           key={photo.id}
-          className={this.classes.masonryItem}
-          style={{
-            width: `${this.state.widthItem}px`,
-            height: `${photo.thumbHeight}px`,
-          }}
+          photo={photo}
+          width={this.state.widthItem}
+          isAuth={isAuth}
           onClick={(e) => handleOpenDialog(e, index)}
-        >
-          <PhotoMasonryItem
-            photo={photo}
-            isAuth={isAuth}
-          />
-        </div>
+        />
       );
     });
 
     return (
-        <div ref={this.setContainerRef}>
-          <Masonry options={masonryOptions}>
+      <div ref={this.setContainerRef} className={classes.root}>
+        <Masonry options={this.masonryOptions()}>
             {items}
           </Masonry>
           <VisibilitySensor onChange={this.handleLoadMore}><div>&nbsp;</div></VisibilitySensor>

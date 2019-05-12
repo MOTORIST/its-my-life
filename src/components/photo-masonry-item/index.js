@@ -11,10 +11,11 @@ import CardActionsTop from '../card-actions-top';
 import DialogConfirmation from '../dialog-confirmation';
 import {deletePhoto} from '../../actions/photos';
 import {setCover} from '../../actions/albums';
-import DeleteButton from './deleteButton';
+import DeleteButton from '../shared/buttons/deleteButton';
+import EditButton from '../shared/buttons/editButton';
 import SetCoverButton from './setCoverButton';
-import EditButton from './editButton';
 import DialogEditPhoto from '../dialog-edit-photo';
+import withTheme from '@material-ui/core/styles/withTheme';
 
 class PhotoMasonryItem extends Component {
   state = {
@@ -84,10 +85,25 @@ class PhotoMasonryItem extends Component {
     dispatch(deletePhoto(photo.id));
   };
 
+  styleItem = () => {
+    const {width, theme, photo} = this.props;
+
+    return {
+      width: `${width}px`,
+      height: `${photo.thumbHeight}px`,
+      marginBottom: theme.spacing.unit * 2,
+    };
+  };
+
   render() {
-    const {photo, isAuth, classes} = this.props;
+    const {photo, isAuth, classes, onClick} = this.props;
+
     return (
-      <Card className={classes.card}>
+      <Card
+        className={classes.card}
+        style={this.styleItem()}
+        onClick={onClick}
+      >
         <CardMedia
           className={classes.media}
           image={photo.thumbnail}
@@ -96,9 +112,9 @@ class PhotoMasonryItem extends Component {
         />
 
         <CardActionsTop show={isAuth}>
-          <DeleteButton handler={this.handleDeleteConfirm}/>
-          <SetCoverButton handler={this.handleSetAlbumCover}/>
-          <EditButton handler={this.handleEditPhoto}/>
+          <DeleteButton handler={this.handleDeleteConfirm} title="Delete photo"/>
+          <SetCoverButton handler={this.handleSetAlbumCover} title="Set album cover"/>
+          <EditButton handler={this.handleEditPhoto} title="Edit photo"/>
         </CardActionsTop>
 
         {isAuth &&
@@ -134,11 +150,14 @@ PhotoMasonryItem.propTypes = {
   }).isRequired,
   isAuth: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default compose(
   connect(),
+  withTheme(),
   withStyles(style),
   pure,
 )(PhotoMasonryItem);

@@ -11,15 +11,13 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import DateRangeIcon from '@material-ui/icons/DateRange';
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Tooltip from '@material-ui/core/Tooltip';
 import CardActionsTop from '../card-actions-top';
 import history from '../../history';
 import {formatDate} from '../../helpers/dates';
 import {deleteAlbum} from '../../actions/albums';
 import DialogConfirmation from '../dialog-confirmation';
+import DeleteButton from '../shared/buttons/deleteButton';
+import EditButton from '../shared/buttons/editButton';
 
 class AlbumListItem extends Component {
   state = {
@@ -99,20 +97,8 @@ class AlbumListItem extends Component {
         </CardActions>
 
         <CardActionsTop show={user.isAuth}>
-          <Tooltip title="Delete album">
-            <IconButton onClick={this.handleConfirm}>
-              <DeleteIcon className={classes.buttonRed}/>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit album">
-            <IconButton
-              color="primary"
-              aria-label="Edit album"
-              onClick={this.handleEditAlbum}
-            >
-              <EditIcon/>
-            </IconButton>
-          </Tooltip>
+          <DeleteButton handler={this.handleConfirm} title="Delete album"/>
+          <EditButton handler={this.handleEditAlbum} title="Edit album"/>
         </CardActionsTop>
 
         <DialogConfirmation
