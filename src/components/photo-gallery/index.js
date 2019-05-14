@@ -44,7 +44,7 @@ class PhotoGallery extends Component {
   isNextPhoto = () => this.state.nextPhoto !== null || this.isNextPage();
   isPrevPhoto = () => this.state.prevPhoto !== null;
 
-  handleOpenDialog = (e, currentPhotoIndex) => {
+  handleOpenDialog = (currentPhotoIndex) => {
     const {photos} = this.props;
 
     this.setState({
