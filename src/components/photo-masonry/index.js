@@ -6,8 +6,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import withTheme from '@material-ui/core/styles/withTheme';
 import Masonry from 'react-masonry-component';
 import VisibilitySensor from 'react-visibility-sensor';
-import {fetchPhotos} from '../../actions/photos';
+import {deletePhoto, fetchPhotos} from '../../actions/photos';
 import PhotoMasonryItem from '../photo-masonry-item';
+import DialogEditPhoto from '../dialog-edit-photo';
+import DialogConfirmation from '../dialog-confirmation';
 import config from '../../config';
 
 const style = (theme) => ({
@@ -23,6 +25,10 @@ class PhotoMasonry extends Component {
     widthItem: config.MASONRY_ITEM_WIDTH,
     defaultWidthItem: config.MASONRY_ITEM_WIDTH,
     isOpenDialogAddAlbum: false,
+    openDialogEditPhoto: false,
+    editPhotoId: null,
+    openDialogConfirm: false,
+    deletePhotoId: null,
   };
 
   componentDidMount() {
@@ -33,8 +39,6 @@ class PhotoMasonry extends Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.calculateWidthItem);
   }
-
-  setContainerRef = conteiner => this.containerRef = conteiner;
 
   handleLoadMore = (isVisibility) => {
     const {album, dispatch} = this.props;
@@ -51,6 +55,48 @@ class PhotoMasonry extends Component {
       dispatch(fetchPhotos(album.id, page));
     }
   };
+
+  handleEditPhoto = (photoId) => {
+    this.setState({
+      openDialogEditPhoto: true,
+      editPhotoId: photoId,
+    });
+  };
+
+  handleCloseDialogEditPhoto = () => {
+    this.setState({
+      openDialogEditPhoto: false,
+    });
+  };
+
+  handleOpenDialog = (indexPhoto) => {
+    this.props.handleOpenDialog(indexPhoto);
+  };
+
+  handleDeleteConfirm = (photoId) => {
+    this.setState({
+      openDialogConfirm: true,
+      deletePhotoId: photoId,
+    });
+  };
+
+  handleCloseDeleteConfirm = (isDelete) => {
+    if (isDelete) {
+      this.deletePhoto();
+    }
+
+    this.setState({
+      openDialogConfirm: false,
+      deletePhotoId: null,
+    });
+  };
+
+  deletePhoto = () => {
+    const {dispatch} = this.props;
+    dispatch(deletePhoto(this.state.deletePhotoId));
+  };
+
+  setContainerRef = conteiner => this.containerRef = conteiner;
 
   calculateWidthItem = () => {
     const margin = this.props.theme.spacing.unit;
@@ -71,7 +117,7 @@ class PhotoMasonry extends Component {
   });
 
   render() {
-    const {photos, handleOpenDialog, isAuth, classes} = this.props;
+    const {photos, isAuth, classes} = this.props;
     let items = [];
 
     photos.forEach((photo, index) => {
@@ -81,7 +127,9 @@ class PhotoMasonry extends Component {
           photo={photo}
           width={this.state.widthItem}
           isAuth={isAuth}
-          onClick={(e) => handleOpenDialog(e, index)}
+          onClick={() => this.handleOpenDialog(index)}
+          handleEditPhoto={this.handleEditPhoto}
+          handleDeleteConfirm={this.handleDeleteConfirm}
         />
       );
     });
@@ -89,10 +137,31 @@ class PhotoMasonry extends Component {
     return (
       <div ref={this.setContainerRef} className={classes.root}>
         <Masonry options={this.masonryOptions()}>
-            {items}
-          </Masonry>
-          <VisibilitySensor onChange={this.handleLoadMore}><div>&nbsp;</div></VisibilitySensor>
-        </div>
+          {items}
+        </Masonry>
+
+        <VisibilitySensor onChange={this.handleLoadMore}>
+          <div>&nbsp;</div>
+        </VisibilitySensor>
+
+        {isAuth &&
+        <DialogEditPhoto
+          isOpen={this.state.openDialogEditPhoto}
+          idPhoto={this.state.editPhotoId}
+          handleClose={this.handleCloseDialogEditPhoto}
+        />
+        }
+
+        {isAuth &&
+        <DialogConfirmation
+          open={this.state.openDialogConfirm}
+          value={this.state.deletePhotoId}
+          onClose={this.handleCloseDeleteConfirm}
+          title="Are you sure?"
+          text="You want to delete a photo?"
+        />
+        }
+      </div>
     );
   }
 }
