@@ -4,12 +4,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 
-function EditButton({handler, title}) {
+function EditButton({handler, title, ...other}) {
   return (
     <Tooltip title={title}>
       <IconButton
         color="primary"
         onClick={handler}
+        {...other}
       >
         <EditIcon/>
       </IconButton>

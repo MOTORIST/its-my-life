@@ -11,10 +11,13 @@ const styles = () => ({
   },
 });
 
-function DeleteButton({handler, title, classes}) {
+function DeleteButton({handler, title, classes, ...other}) {
   return (
     <Tooltip title={title}>
-      <IconButton onClick={handler}>
+      <IconButton
+        onClick={handler}
+        {...other}
+      >
         <DeleteIcon className={classes.colorIcon}/>
       </IconButton>
     </Tooltip>
